@@ -1,5 +1,7 @@
 package com.shop.cafe.controller;
 
+import java.util.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +30,33 @@ public class MemberController {
 			e.printStackTrace();
 			return "nickname 이나 email이 중복됩니다람쥐";
 		}
+	}
+	
+	
+	@PostMapping("login")
+	public Map<String, String> login(@RequestBody Member m){
+		System.out.println(m);
+		
+		Map<String, String> responseMap = new HashMap<>();
+		
+		try {
+			m = memberService.login(m);
+			String nickname = m.getNickname();
+			if(m!= null && nickname!= null && !nickname.trim().equals("")) {
+				responseMap.put("nickname", nickname);
+			}
+			else {
+				responseMap.put("msg", "다시 로그인 해주세용");
+			}
+				
+		} catch (Exception e) {
+			
+			responseMap.put("msg", "다시 로그인 해주세용");
+			e.printStackTrace();
+		}
+		
+		return responseMap;
+		
 	}
 	
 }
